@@ -60,7 +60,7 @@ dependencies {
     compileOnly("org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT") { isTransitive = false }
     compileOnly("com.github.azbh111:craftbukkit-1.8.8:R")
     compileOnly("org.mongodb:mongo-java-driver:3.12.8")
-    compileOnly("org.redisson:redisson:3.19.1")
+    compileOnly("org.redisson:redisson:4.3.1")
     compileOnly("de.dytanic.cloudnet:cloudnet-wrapper-jvm:3.4.0-RELEASE")
     compileOnly("de.dytanic.cloudnet:cloudnet-syncproxy:3.4.0-RELEASE")
     compileOnly("de.dytanic.cloudnet:cloudnet-bridge:3.4.0-RELEASE")
