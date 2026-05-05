@@ -54,7 +54,7 @@ dependencies {
     compileOnly("de.teamholy:bukkit-markupapi:${coreVersion}")
     compileOnly("com.comphenix.protocol:ProtocolLib:5.3.0")
     compileOnly("eu.koboo:en2do:3.1.9")
-    compileOnly("io.netty:netty-codec:4.1.97.Final")
+    compileOnly("io.netty:netty-codec:4.2.13.Final")
     compileOnly("net.md-5:bungeecord-api:1.19-R0.1-SNAPSHOT")
     compileOnly("net.md-5:brigadier:1.0.16-SNAPSHOT")
     compileOnly("org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT") { isTransitive = false }
