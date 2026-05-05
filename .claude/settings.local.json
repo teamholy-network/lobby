@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\mirco\\\\Desktop\\\\polocloud\\\\teamholy-lobby\" -Force)",
+      "Bash(Select-Object Name, Mode)",
+      "Bash(Format-Table -AutoSize)",
+      "Bash(./gradlew dependencies *)",
+      "Bash(./gradlew compileJava)"
+    ]
+  }
+}
