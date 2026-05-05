@@ -61,9 +61,9 @@ dependencies {
     compileOnly("com.github.azbh111:craftbukkit-1.8.8:R")
     compileOnly("org.mongodb:mongo-java-driver:3.12.8")
     compileOnly("org.redisson:redisson:3.19.1")
-    compileOnly("de.dytanic.cloudnet:cloudnet-wrapper-jvm:3.4.0-RELEASE")
-    compileOnly("de.dytanic.cloudnet:cloudnet-syncproxy:3.4.0-RELEASE")
-    compileOnly("de.dytanic.cloudnet:cloudnet-bridge:3.4.0-RELEASE")
+    compileOnly("de.dytanic.cloudnet:cloudnet-wrapper-jvm:3.4.5-RELEASE")
+    compileOnly("de.dytanic.cloudnet:cloudnet-syncproxy:3.4.5-RELEASE")
+    compileOnly("de.dytanic.cloudnet:cloudnet-bridge:3.4.5-RELEASE")
     // slimeworldmanager-api and holographicdisplays-api must be installed to mavenLocal()
     // from the server's plugins folder: mvn install:install-file -Dfile=<jar> -DgroupId=... -DartifactId=... -Dversion=... -Dpackaging=jar
     compileOnly("com.grinderwolf:slimeworldmanager-api:2.2.1")
