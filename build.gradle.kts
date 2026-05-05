@@ -53,7 +53,7 @@ dependencies {
     compileOnly("de.teamholy:bungee-core-api:${coreVersion}")
     compileOnly("de.teamholy:bukkit-markupapi:${coreVersion}")
     compileOnly("com.comphenix.protocol:ProtocolLib:5.3.0")
-    compileOnly("eu.koboo:en2do:3.1.9")
+    compileOnly("eu.koboo:en2do:3.2.3")
     compileOnly("io.netty:netty-codec:4.1.97.Final")
     compileOnly("net.md-5:bungeecord-api:1.21-R0.4")
     compileOnly("net.md-5:brigadier:1.0.16-SNAPSHOT")
