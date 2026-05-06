@@ -19,7 +19,12 @@ public class SpawnCommand implements CommandExecutor {
         if (!(commandSender instanceof Player player)) {
             return true;
         }
-        player.teleport(BukkitCore.getInstance().getLocationManager().getLocation("de/teamholy/lobby"));
+        org.bukkit.Location spawn = BukkitCore.getInstance().getLocationManager().getLocation("lobby");
+        if (spawn == null) {
+            player.sendMessage("§cSpawn location is not set yet.");
+            return true;
+        }
+        player.teleport(spawn);
         return false;
     }
 }

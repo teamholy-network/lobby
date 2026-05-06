@@ -73,7 +73,8 @@ public class Lobby extends JavaPlugin {
           player.setExp((float) count / maxPlayers);
 
           if (player.getLocation().getY() < 0) {
-            player.teleport(BukkitCore.getInstance().getLocationManager().getLocation("de/teamholy/lobby"));
+            org.bukkit.Location spawn = BukkitCore.getInstance().getLocationManager().getLocation("lobby");
+            if (spawn != null) player.teleport(spawn);
           }
         }
       } catch (InterruptedException | ExecutionException e) {

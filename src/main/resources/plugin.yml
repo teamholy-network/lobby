@@ -1,21 +1,11 @@
-name: teamholy-lobby
-version: 1.0-SNAPSHOT
+name: Lobby
+author: Yassino
+version: 1.0
 main: de.teamholy.lobby.Lobby
-api-version: 1.8
-authors: [Yassino]
-description: TeamHoly Lobby Plugin
 
-depend:
-  - BukkitCore
-  - HolographicDisplays
-
-softdepend:
-  - ProtocolLib
+depend: [CloudNet-Bridge ,HolographicDisplays, bukkit-core]
+softdepend: [CloudNet-Bridge, HolographicDisplays, bukkit-core]
 
 commands:
-  spawn:
-    description: Teleports you to spawn
-    usage: /spawn
   test1:
-    description: Test command
-    usage: /test1
+  spawn:
