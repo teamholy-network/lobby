@@ -74,7 +74,10 @@ public class PlayerJoinQuitListener implements Listener {
 
     @EventHandler
     public void onSpawnLoc(PlayerSpawnLocationEvent event) {
-        event.setSpawnLocation(BukkitCore.getInstance().getLocationManager().getLocation("de/teamholy/lobby"));
+        org.bukkit.Location spawn = BukkitCore.getInstance().getLocationManager().getLocation("lobby");
+        if (spawn != null) {
+            event.setSpawnLocation(spawn);
+        }
     }
 
     @EventHandler

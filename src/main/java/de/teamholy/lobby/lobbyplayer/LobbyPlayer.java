@@ -247,12 +247,12 @@ public class LobbyPlayer {
     }
 
     public void setScoreboard() {
-        scoreboardAPI.setLine(9, " §8§m--------------- ");
+        scoreboardAPI.setLine(9, "§8§m                       §7");
         scoreboardAPI.setLine(8, "§7");
         scoreboardAPI.setLine(7, " §7Rank§8: " + playerRank.getColorCode() + playerRank.getName());
         scoreboardAPI.setLine(6, "§2");
         scoreboardAPI.setLine(2, "§5");
-        scoreboardAPI.setLine(1, " §8§m--------------- ");
+        scoreboardAPI.setLine(1, "§8§m                       §7");
         scoreboardAPI.setLine(0, "§o" + Wrapper.getInstance().getCurrentServiceInfoSnapshot().getServiceId().getName());
 
         CountDownLatch latch = new CountDownLatch(2);
@@ -455,7 +455,7 @@ public class LobbyPlayer {
                         .setName("§8» §6Spawn")
                         .build(),
                 10,
-                event -> player.teleport(BukkitCore.getInstance().getLocationManager().getLocation("de/teamholy/lobby"))
+                event -> player.teleport(BukkitCore.getInstance().getLocationManager().getLocation("lobby"))
         );
 
         addGameModeItem(inventory, 21, Material.STICK, "MLGRush",

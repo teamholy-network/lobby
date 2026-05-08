@@ -5,11 +5,19 @@ plugins {
 group = "de.teamholy"
 version = "1.0-SNAPSHOT"
 
-val coreVersion = "2.7.2"
-
 repositories {
     mavenLocal()
     mavenCentral()
+
+    maven {
+        name = "github-teamholy"
+        url = uri("https://maven.pkg.github.com/teamholy-network/holy-core")
+        credentials {
+            username = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
+            password = project.findProperty("gpr.key") as String? ?: System.getenv("TOKEN")
+        }
+        content { includeGroup("de.teamholy") }
+    }
 
     maven {
         name = "cloudnet-releases"
@@ -33,44 +41,62 @@ repositories {
     maven {
         name = "jitpack"
         url = uri("https://jitpack.io")
-        content {
-            includeGroupByRegex("com\\.github\\..*")
-        }
+        content { includeGroupByRegex("com\\.github\\..*") }
     }
 
     maven {
         name = "dmulloy2"
         url = uri("https://repo.dmulloy2.net/repository/public/")
-        content {
-            includeGroup("com.comphenix.protocol")
-        }
+        content { includeGroup("com.comphenix.protocol") }
     }
+
+    maven {
+        name = "koboo"
+        url = uri("https://repo.koboo.eu/releases")
+        content { includeGroup("eu.koboo") }
+    }
+
+    maven {
+        name = "sonatype-snapshots"
+        url = uri("https://oss.sonatype.org/content/repositories/snapshots/")
+    }
+
+    maven(url = "https://libraries.minecraft.net")
+    maven ( url  ="https://repo.glaremasters.me/repository/concuncan/" )
+    maven(url = "https://repo.codemc.io/repository/maven-public/")
+    maven(url = "https://maven.elmakers.com/repository/")
 }
 
 dependencies {
-    compileOnly("de.teamholy:holy-core-api:${coreVersion}")
-    compileOnly("de.teamholy:bukkit-core-api:${coreVersion}")
-    compileOnly("de.teamholy:bungee-core-api:${coreVersion}")
-    compileOnly("de.teamholy:bukkit-markupapi:${coreVersion}")
-    compileOnly("com.comphenix.protocol:ProtocolLib:5.3.0")
-    compileOnly("eu.koboo:en2do:3.1.9")
-    compileOnly("io.netty:netty-codec:4.1.97.Final")
-    compileOnly("net.md-5:bungeecord-api:1.19-R0.1-SNAPSHOT")
-    compileOnly("net.md-5:brigadier:1.0.16-SNAPSHOT")
-    compileOnly("org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT") { isTransitive = false }
-    compileOnly("com.github.azbh111:craftbukkit-1.8.8:R")
-    compileOnly("org.mongodb:mongo-java-driver:3.12.8")
-    compileOnly("org.redisson:redisson:3.19.1")
-    compileOnly("de.dytanic.cloudnet:cloudnet-wrapper-jvm:3.4.0-RELEASE")
-    compileOnly("de.dytanic.cloudnet:cloudnet-syncproxy:3.4.0-RELEASE")
-    compileOnly("de.dytanic.cloudnet:cloudnet-bridge:3.4.0-RELEASE")
-    // slimeworldmanager-api and holographicdisplays-api must be installed to mavenLocal()
-    // from the server's plugins folder: mvn install:install-file -Dfile=<jar> -DgroupId=... -DartifactId=... -Dversion=... -Dpackaging=jar
-    compileOnly("com.grinderwolf:slimeworldmanager-api:2.2.1")
-    compileOnly("com.gmail.filoghost.holographicdisplays:holographicdisplays-api:2.4.9")
+    compileOnly(libs.bundles.teamholy)
+    compileOnly(libs.bundles.cloudnet)
 
-    compileOnly("org.projectlombok:lombok:1.18.30")
-    annotationProcessor("org.projectlombok:lombok:1.18.30")
+    compileOnly(libs.spigot.api) { isTransitive = false }
+    compileOnly(libs.bungeecord.api)
+    compileOnly(libs.brigadier)
+    compileOnly(libs.craftbukkit)
+
+    compileOnly(libs.protocollib)
+    compileOnly(libs.en2do)
+    compileOnly(libs.netty.codec)
+    compileOnly(libs.mongodb)
+    compileOnly(libs.redisson)
+
+    // must be installed to mavenLocal() — see slime-api / holographic-api in libs.versions.toml
+    compileOnly(libs.slime.api)
+    compileOnly(libs.holographic.api)
+
+    compileOnly(libs.lombok)
+    annotationProcessor(libs.lombok)
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+tasks.withType<JavaCompile> {
+    options.encoding = "UTF-8"
 }
 
 tasks.test {

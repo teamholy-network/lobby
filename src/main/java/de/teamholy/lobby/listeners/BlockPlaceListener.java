@@ -35,7 +35,7 @@ public class BlockPlaceListener implements Listener {
                 return;
             }
 
-            if (BukkitCore.getInstance().getLocationManager().getLocation("de/teamholy/lobby").distance(e.getBlock().getLocation()) < 10.0) {
+            if (BukkitCore.getInstance().getLocationManager().getLocation("lobby").distance(e.getBlock().getLocation()) < 10.0) {
                 player.sendMessage("§cYou cant place blocks here");
                 e.setCancelled(true);
                 return;
