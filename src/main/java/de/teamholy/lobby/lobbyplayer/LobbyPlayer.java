@@ -35,105 +35,8 @@ import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 /**
- * The LobbyPlayer class represents a player in the lobby system with specific settings, configurations,
- * and functionalities. This class provides methods to manage and manipulate the player's data, scoreboard,
- * settings, inventories, and game functionalities within the lobby environment.
- *
- * Fields:
- *  - INVENTORY_BORDER_COLOR: The color used for inventory borders in the lobby system.
- *  - MAX_ITEM_STACK: The maximum stack size for items in the lobby system.
- *  - NO_CLAN_TEXT: Placeholder text for players without a clan.
- *  - player: Represents the Player object associated with the lobby player.
- *  - scoreboardAPI: The API used for managing and updating the player's scoreboard.
- *  - playerRank: Stores the rank of the player in the lobby.
- *  - friendEntry: Stores the player's friend-related information.
- *  - gameProfile: Represents the player's game profile for lobby gameplay.
- *  - onlineTimeString: The string representation of the player's online time.
- *  - clanNameString: The name of the player's clan.
- *  - cooldown: Tracks cooldowns for various player actions in the lobby.
- *  - isInArena: Indicates whether the player is currently in an arena.
- *  - fly: Indicates whether the player has the ability to fly.
- *  - collectedNameMCReward: Tracks whether the player has collected the NameMC reward.
- *  - collectedLabyModReward: Tracks whether the player has collected the LabyMod reward.
- *
- * Constructors:
- *  - LobbyPlayer(Player player, PlayerCacheManager.CachedBukkitPlayer cachedBukkitPlayer):
- *      Instantiates a new LobbyPlayer object based on the given player and cached Bukkit player data.
- *
- * Methods:
- *  - public LobbyPlayer(Player player, PlayerCacheManager.CachedBukkitPlayer cachedBukkitPlayer):
- *      Creates a new instance of LobbyPlayer with the Player and cached Bukkit data provided.
- *  - private void initializePlayer():
- *      Initializes the player's settings and configurations upon joining the lobby.
- *  - private void loadGameProfileAsync():
- *      Asynchronously loads the player's game profile.
- *  - public void executeBungeeCommand(String command):
- *      Executes a BungeeCord command on behalf of the player.
- *  - public void createNPC(String name, UUID uuid, Location location):
- *      Creates a non-player character (NPC) with the specified name, UUID, and location for lobby interactions.
- *  - private String formatOnlineTime(long millis):
- *      Formats the provided online time in milliseconds to a readable string representation.
- *  - public void updateOnlineTime():
- *      Updates the player's online time and its associated formatted string.
- *  - public void updateClanTagScore():
- *      Updates the player's clan tag score on the scoreboard.
- *  - public void updateCoinsScore():
- *      Updates the player's coins score on the scoreboard.
- *  - public void updateRankScore():
- *      Updates the player's rank score on the scoreboard.
- *  - public void setScoreboard():
- *      Configures and sets the scoreboard for the player in the lobby.
- *  - private void loadClanForScoreboard(CountDownLatch latch):
- *      Loads the player's clan information for updating the scoreboard, synchronizing with a latch.
- *  - private void loadPlayerDataForScoreboard(CountDownLatch latch):
- *      Loads the player's data to update the scoreboard, synchronizing with a latch.
- *  - public void openGameSubInventory(String group, Material material):
- *      Opens a sub-inventory for selecting game modes within a specified group and associated material.
- *  - private List<ServiceInfoSnapshot> getAvailableServices(String group):
- *      Retrieves a list of available services for the specified group.
- *  - private void sendNoServerMessage(String group):
- *      Sends a message to the player indicating that there are no available servers for the specified group.
- *  - private void connectToServer(String serverName):
- *      Connects the player to the specified server by name.
- *  - private void openServerSelectionInventory(String group, Material material, List<ServiceInfoSnapshot> services):
- *      Opens a server selection inventory for the player for a given group, material, and available services.
- *  - public void sendPlayerToGroup(String group):
- *      Sends the player to a server group based on the specified group identifier.
- *  - private List<ServiceInfoSnapshot> findBestServers(String group):
- *      Finds and provides the best servers available for the specified group.
- *  - public void openLobbySwitcher():
- *      Opens the lobby switcher interface to allow the player to switch between lobbies.
- *  - private void addLobbyServers(Inventory inventory, String group, Material material, String currentServer,
- *                                AtomicInteger slot, boolean requiresPermission):
- *      Adds available lobby servers to the player's inventory interface.
- *  - public void openGamesInventory():
- *      Opens the game's inventory interface for the player to select game modes.
- *  - private void addGameModeItem(Inventory inventory, int slot, Material material, String gameMode,
- *                                 String desc1, String desc2, String desc3, String playerType):
- *      Adds a game mode item to the inventory at the specified slot with the given metadata.
- *  - public void openSettings():
- *      Opens the settings interface for the player to modify their preferences.
- *  - private FriendProfile loadFriendProfile():
- *      Loads and returns the friend profile associated with the player.
- *  - private PlayerProfile loadPlayerProfile():
- *      Loads and returns the player's profile data.
- *  - private void addToggleSetting(Inventory inventory, int slot, Material material, String name,
- *                                  boolean currentState, Runnable onToggle):
- *      Adds a toggleable setting to the inventory at the specified slot.
- *  - private void addPartyInviteSetting(Inventory inventory, int slot, FriendProfile friendProfile, AtomicBoolean updateFlag):
- *      Adds a party invite setting to the inventory based on the player's friend profile and update flag.
- *  - private PartyInviteAllowance getNextPartyAllowance(PartyInviteAllowance current):
- *      Retrieves the next party allowance state based on the current allowance state.
- *  - private void addAutoNickSetting(Inventory inventory, int slot, PlayerProfile playerProfile, AtomicBoolean updateFlag):
- *      Adds the auto-nick setting to the inventory based on the player profile and update flag.
- *  - private void updateToggleLore(ItemBuilder builder, boolean activated):
- *      Updates the lore of a toggleable item based on its activation state.
- *  - private void updatePartyInviteLore(ItemBuilder builder, PartyInviteAllowance allowance):
- *      Updates the lore item to reflect the current party invite allowance state.
- *  - private void addInventoryBorder(Inventory inventory, int size):
- *      Adds a border to an inventory of the specified size.
- *  - public void setInventory():
- *      Configures and sets the player's inventory in the lobby environment.
+ * Per-player lobby session state: scoreboard, hotbar items, settings GUI,
+ * friend data and server-selection inventories.
  */
 @Getter
 @Setter
@@ -151,7 +54,6 @@ public class LobbyPlayer {
     private GameProfile gameProfile;
     private String onlineTimeString;
     private String clanNameString;
-    private Long cooldown = System.currentTimeMillis();
 
     private boolean isInArena;
     private boolean fly;
@@ -695,9 +597,7 @@ public class LobbyPlayer {
             builder.setEnchantments(Enchantment.KNOCKBACK, 1);
         } else {
             builder.setLore("§7currently §cdeactivated");
-            ItemMeta meta = builder.itemStack.getItemMeta();
-            meta.removeEnchant(Enchantment.KNOCKBACK);
-            builder.itemStack.setItemMeta(meta);
+            removeKnockbackGlow(builder);
         }
     }
 
@@ -713,10 +613,14 @@ public class LobbyPlayer {
         if (allowance == PartyInviteAllowance.EVERYONE || allowance == PartyInviteAllowance.ONLY_FRIENDS) {
             builder.setEnchantments(Enchantment.KNOCKBACK, 1);
         } else {
-            ItemMeta meta = builder.itemStack.getItemMeta();
-            meta.removeEnchant(Enchantment.KNOCKBACK);
-            builder.itemStack.setItemMeta(meta);
+            removeKnockbackGlow(builder);
         }
+    }
+
+    private void removeKnockbackGlow(ItemBuilder builder) {
+        ItemMeta meta = builder.itemStack.getItemMeta();
+        meta.removeEnchant(Enchantment.KNOCKBACK);
+        builder.itemStack.setItemMeta(meta);
     }
 
     private void addInventoryBorder(Inventory inventory, int size) {

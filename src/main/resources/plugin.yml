@@ -1,6 +1,6 @@
 name: Lobby
 author: Yassino
-version: 1.0
+version: ${version}
 main: de.teamholy.lobby.Lobby
 
 depend: [CloudNet-Bridge ,HolographicDisplays, bukkit-core]

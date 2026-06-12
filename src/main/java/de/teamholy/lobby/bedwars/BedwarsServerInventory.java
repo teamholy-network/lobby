@@ -130,7 +130,7 @@ public class BedwarsServerInventory implements Listener {
         inventoryHashMap.forEach((s, itemStacks) -> {
             if (s.equalsIgnoreCase(group)) {
                 List<ServiceInfoSnapshot> gameServices = Lobby.getInstance().getCloudCacheHandler().getServerInfos().values().stream()
-                        .filter(service -> service.isConnected())
+                        .filter(ServiceInfoSnapshot::isConnected)
                         .filter(info -> info.getConfiguration().getGroups()[0].equals(group))
                         .filter(serviceInfoSnapshot -> serviceInfoSnapshot.getProperty(BridgeServiceProperty.STATE).isPresent()
                                 && serviceInfoSnapshot.getProperty(BridgeServiceProperty.STATE).get().equalsIgnoreCase("LOBBY"))

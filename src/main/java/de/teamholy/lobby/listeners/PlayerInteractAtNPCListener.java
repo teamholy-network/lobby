@@ -9,14 +9,6 @@ import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.UUID;
-import java.util.function.Consumer;
-
-/* copyright by Yassino */
 public class PlayerInteractAtNPCListener implements Listener {
 
     @EventHandler
@@ -37,6 +29,7 @@ public class PlayerInteractAtNPCListener implements Listener {
             case "bedwars&rush" -> lobbyPlayer.getPlayer().teleport(BukkitCore.getInstance().getLocationManager().getLocation("bw_spawn"));
             case "website" -> lobbyPlayer.executeBungeeCommand("link");
             case "namemc" -> lobbyPlayer.executeBungeeCommand("vote");
+            case "wm 2026" -> lobbyPlayer.openGameSubInventory("wm2026", Material.SLIME_BALL);
             case "bridge" -> lobbyPlayer.openGameSubInventory("Bridge", Material.IRON_PICKAXE);
             case "web shop" -> Lobby.getInstance().getWebshopInventory().openInventory(lobbyPlayer);
             default -> {
@@ -44,28 +37,5 @@ public class PlayerInteractAtNPCListener implements Listener {
 
         }
     }
-
-
-
-
-    private void hasLiked(UUID uuid, Consumer<String> consumer) {
-        BukkitCore.getAPI().getExecutor().execute(() -> {
-            try {
-                URL url = new URL("https://api.namemc.com/server/teamholy.de/likes?profile=" + uuid);
-
-                BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
-
-                String line;
-                while ((line = in.readLine()) != null) {
-                    consumer.accept(line);
-                }
-                in.close();
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-    }
-
 
 }

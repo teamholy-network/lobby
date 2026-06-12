@@ -4,7 +4,6 @@ import de.teamholy.lobby.Lobby;
 import de.teamholy.lobby.lobbyplayer.LobbyPlayer;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,8 +18,19 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.weather.WeatherChangeEvent;
 
+import java.util.EnumSet;
+import java.util.Set;
+
 /* copyright by Yassino */
 public class BlockListener implements Listener {
+
+    private static final Set<Material> PRESSURE_PLATES = EnumSet.of(
+            Material.STONE_PLATE, Material.GOLD_PLATE, Material.IRON_PLATE, Material.WOOD_PLATE);
+
+    private static final Set<Material> BLOCKED_INTERACT_BLOCKS = EnumSet.of(
+            Material.DRAGON_EGG, Material.CHEST, Material.FURNACE, Material.BURNING_FURNACE,
+            Material.TRAP_DOOR, Material.ENDER_CHEST, Material.WORKBENCH, Material.WOODEN_DOOR,
+            Material.WOOD_DOOR, Material.STONE_BUTTON, Material.WOOD_BUTTON, Material.LEVER);
 
     @EventHandler
     public void onBlockPhysic(BlockPhysicsEvent event) {
@@ -67,23 +77,20 @@ public class BlockListener implements Listener {
     }
 
     @EventHandler
-    public void onHit(EntityDamageByEntityEvent entityDamageByEntityEvent) {
-        Player player = (Player) entityDamageByEntityEvent.getDamager();
-        if (entityDamageByEntityEvent.getDamager() == null || entityDamageByEntityEvent.getEntity() == null) {
-            return;
+    public void onHit(EntityDamageByEntityEvent event) {
+        // non-player damagers (arrows etc.) never reached the checks below — keep it that way
+        if (!(event.getDamager() instanceof Player player)) return;
+
+        if (event.getEntity() instanceof Player && player.getItemInHand().getType() == Material.SKULL_ITEM) {
+            Lobby.getInstance().getLobbyPlayerEntryHandler().get(player.getUniqueId()).executeBungeeCommand("friend add " + event.getEntity().getUniqueId());
         }
-        if (entityDamageByEntityEvent.getDamager() instanceof Player && entityDamageByEntityEvent.getEntity() instanceof Player) {
-            if (player.getItemInHand().getType() == Material.SKULL_ITEM) {
-                Lobby.getInstance().getLobbyPlayerEntryHandler().get(player.getUniqueId()).executeBungeeCommand("friend add " + entityDamageByEntityEvent.getEntity().getUniqueId());
-            }
+        if (event.getEntityType() == EntityType.ARMOR_STAND) {
+            event.setCancelled(true);
         }
-        if (entityDamageByEntityEvent.getEntityType() == EntityType.ARMOR_STAND) {
-            entityDamageByEntityEvent.setCancelled(true);
-        }
-        if (entityDamageByEntityEvent.getEntityType() == EntityType.ITEM_FRAME) {
+        if (event.getEntityType() == EntityType.ITEM_FRAME) {
             if (player.getGameMode() == GameMode.CREATIVE)
                 return;
-            entityDamageByEntityEvent.setCancelled(true);
+            event.setCancelled(true);
         }
     }
 
@@ -100,17 +107,9 @@ public class BlockListener implements Listener {
     }
 
     @EventHandler
-    public void handlepenmoisAsdffefe(PlayerInteractEvent ev) {
-        if (ev.getAction().equals(Action.PHYSICAL)) {
-            if (ev.getClickedBlock().getType() == Material.STONE_PLATE) {
-                ev.setCancelled(true);
-            } else if (ev.getClickedBlock().getType() == Material.GOLD_PLATE) {
-                ev.setCancelled(true);
-            } else if (ev.getClickedBlock().getType() == Material.IRON_PLATE) {
-                ev.setCancelled(true);
-            } else if (ev.getClickedBlock().getType() == Material.WOOD_PLATE) {
-                ev.setCancelled(true);
-            }
+    public void onPressurePlate(PlayerInteractEvent event) {
+        if (event.getAction() == Action.PHYSICAL && PRESSURE_PLATES.contains(event.getClickedBlock().getType())) {
+            event.setCancelled(true);
         }
     }
 
@@ -135,20 +134,8 @@ public class BlockListener implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent e) {
-        if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            Block block = e.getClickedBlock();
-            if (block.getType() == Material.DRAGON_EGG) e.setCancelled(true);
-            if (block.getType() == Material.CHEST) e.setCancelled(true);
-            if (block.getType() == Material.FURNACE) e.setCancelled(true);
-            if (block.getType() == Material.BURNING_FURNACE) e.setCancelled(true);
-            if (block.getType() == Material.TRAP_DOOR) e.setCancelled(true);
-            if (block.getType() == Material.ENDER_CHEST) e.setCancelled(true);
-            if (block.getType() == Material.WORKBENCH) e.setCancelled(true);
-            if (block.getType() == Material.WOODEN_DOOR) e.setCancelled(true);
-            if (block.getType() == Material.WOOD_DOOR) e.setCancelled(true);
-            if (block.getType() == Material.STONE_BUTTON) e.setCancelled(true);
-            if (block.getType() == Material.WOOD_BUTTON) e.setCancelled(true);
-            if (block.getType() == Material.LEVER) e.setCancelled(true);
+        if (e.getAction() == Action.RIGHT_CLICK_BLOCK && BLOCKED_INTERACT_BLOCKS.contains(e.getClickedBlock().getType())) {
+            e.setCancelled(true);
         }
     }
 

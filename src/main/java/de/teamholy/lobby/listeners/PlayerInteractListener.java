@@ -32,26 +32,20 @@ public class PlayerInteractListener implements Listener {
         Player player = event.getPlayer();
         LobbyPlayer lobbyPlayer = Lobby.getInstance().getLobbyPlayerEntryHandler().get(player.getUniqueId());
 
-        if (event.getAction() != null || event.getItem() != null || event.getItem().getType() != null || event.getItem().getType() != Material.AIR || event.getItem().getItemMeta() != null || event.getItem().getItemMeta().getDisplayName() != null) {
-            if(event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+        if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) {
+            return;
+        }
+        if (event.getItem() == null || event.getItem().getItemMeta() == null) {
+            return;
+        }
 
-                if(event.getItem() == null || event.getItem().getItemMeta() == null) {
-                    return;
-                }
-
-                if (event.getItem().getType() == Material.COMPASS) {
-                    lobbyPlayer.openGamesInventory();
-                } else if (event.getItem().getType() == Material.NETHER_STAR) {
-                    lobbyPlayer.openLobbySwitcher();
-                } else if (event.getItem().getType() == Material.SKULL_ITEM) {
-                    lobbyPlayer.getFriendEntry().openFriendGui(player,1, FriendEntry.SortOption.LASTONLINE_RECENTLY);
-                } else if (event.getItem().getType() == Material.FIREWORK) {
-                    event.setCancelled(true);
-                } else if (event.getItem().getType() == Material.REDSTONE_COMPARATOR) {
-                    lobbyPlayer.openSettings();
-                }
-
-
+        switch (event.getItem().getType()) {
+            case COMPASS -> lobbyPlayer.openGamesInventory();
+            case NETHER_STAR -> lobbyPlayer.openLobbySwitcher();
+            case SKULL_ITEM -> lobbyPlayer.getFriendEntry().openFriendGui(player, 1, FriendEntry.SortOption.LASTONLINE_RECENTLY);
+            case FIREWORK -> event.setCancelled(true);
+            case REDSTONE_COMPARATOR -> lobbyPlayer.openSettings();
+            default -> {
             }
         }
     }

@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.scheduler.BukkitRunnable;
 
+// seasonal: schedule in Lobby#onEnable while the Halloween event is active
 public class HalloweenEffectsRunnable extends BukkitRunnable {
 
     @Override

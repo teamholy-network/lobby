@@ -25,7 +25,7 @@ import java.util.UUID;
 public class CloudListener implements Listener {
 
     @EventHandler
-    public void onSubChanne(CloudChannelListenEvent event) {
+    public void onSubChannel(CloudChannelListenEvent event) {
         JsonDocument data = event.getData();
         if (event.getChannel().equalsIgnoreCase("bukkit")) {
             if (event.getMessage().equalsIgnoreCase("onlineTime_update")) {
